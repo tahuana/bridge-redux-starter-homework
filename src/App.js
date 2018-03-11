@@ -1,16 +1,18 @@
 import React, {Component} from 'react';
 import './App.css';
 import {connect} from 'react-redux';
-import {addProduct} from './actions/index';
+import {addProduct, removeProduct} from './actions/index';
 import Chance from 'chance';
 
 export const chance = Chance();
 
-const Product = (props) => <div>{props.name}</div>;
+const Product = (props) => <div>{props.name} <RemoverButton remove={props.remove} id={props.id} /></div>;
 
 const DaBest = ({name}) => <h1>The Best: {name}</h1>;
 
 const AdderButton = ({add}) => <button onClick={() => add({name: 'Sofa'})}>Add Sofa</button>
+
+const RemoverButton = ({remove, id}) => <button onClick={() => remove({id: id})}>Remove item</button>
 
 class App extends Component {
 
@@ -30,12 +32,12 @@ class App extends Component {
   }
 
   render() {
-    const {productList, add, whoIsTheBest} = this.props;
+    const {productList, add, remove, whoIsTheBest} = this.props;
     debugger;
     return (
       <div>
         <DaBest name={whoIsTheBest}/>
-        {productList.map(product => <Product name={product.name} key={product.id}/>)}
+        {productList.map(product => <Product name={product.name} key={product.id} id={product.id} remove={remove} />)}
 
         <AdderButton {...this.props} />
       </div>
@@ -47,6 +49,7 @@ class App extends Component {
 // React x REDUX STUFF
 
 const mapStateToProps = state => {
+  debugger;
   return {
     productList: state.products.productList,
     whoIsTheBest: 'Della',
@@ -58,6 +61,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = {
   add: addProduct,
+  remove: removeProduct,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

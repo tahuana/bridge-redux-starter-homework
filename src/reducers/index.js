@@ -15,6 +15,9 @@ export const products = (state = INITIAL_STATE, {type, payload}) => {
         case ACTION_TYPES.addProduct:
             // using object spread, I am saying - I want to return the old state, except change the productList property
             return {...state, productList: state.productList.concat(payload.product)};
+        case ACTION_TYPES.removeProduct:
+            // using object spread, I am saying - I want to return the old state, except change the productList property
+            return {...state, productList: state.productList.filter(prod => prod.id !== payload.product.id)};
     }
     return state;
 };
